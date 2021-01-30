@@ -1,46 +1,61 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace ClassMetotDemo
+namespace Generics
 {
     class Program
     {
         static void Main(string[] args)
         {
-            MusteriManager musteriManager = new MusteriManager();
+            List<string> sehirler = new List<string>();
+            sehirler.Add("Ankara");
+            sehirler.Add("Ankara");
+            sehirler.Add("Ankara");
+            sehirler.Add("Ankara");
+            sehirler.Add("Ankara");
+            sehirler.Add("Ankara");
 
-            Musteri musteri1 = new Musteri();
-            musteri1.Id = "1234567890";
-            musteri1.Adi = "Sude";
-            musteri1.Soyadi = "Büyükmumcu";
-            musteri1.Yasi = 23;
-            musteri1.MusteriNo = "12345";
-
-            Musteri musteri2 = new Musteri();
-            musteri2.Id = "345678912";
-            musteri2.Adi = "Duygu";
-            musteri2.Soyadi = "Dinler";
-            musteri2.Yasi = 22;
-            musteri2.MusteriNo = "34567";
-
-            Musteri musteri3 = new Musteri();
-            musteri3.Id = "78901234";
-            musteri3.Adi = "Tuba";
-            musteri3.Soyadi = "Ebeperi";
-            musteri3.Yasi = 23;
-            musteri3.MusteriNo = "65789";
-
-            musteriManager.Add(musteri1);
-            musteriManager.Add(musteri2);
-            musteriManager.Add(musteri3);
-
-            Musteri[] musteriler = new Musteri[] { musteri1, musteri2, musteri3 };
-
-            foreach (Musteri musteri in musteriler)
-            {
-                musteriManager.List(musteri1);
-            }
-            musteriManager.Delete(musteri2);
+            Console.WriteLine(sehirler.Count);
+            MyList<string> sehirler2 = new MyList<string>();
+            sehirler2.Add("Ankara");
+            sehirler2.Add("Ankara");
+            sehirler2.Add("Ankara");
+            sehirler2.Add("Ankara");
+            sehirler2.Add("Ankara");
+            Console.WriteLine(sehirler2.Count);
+            //mecburen string vermemiz lazım çünkü yukarıdaki list<string> dedim
 
         }
+    }
+    class MyList <T> //Generic Class 
+        //buaraya T dedik farketmez biz Type dan T dedik.
+        //bu claassın çalışma tipi T dedik
+    //Mylist generic olmayan tiptir.Genericlerle hangi tipi verirseniz içindeki operasyonlar o tipte çalışıyor.
+    {
+        T[] _array;
+        T[] _temparray; //geçici olarak yedek almak için açtığımız array
+        public MyList()
+        {
+            _array = new T[0];
+        }
+        public void Add(T item)
+        {
+            _temparray = _array; //bu demek oluyor ki temparray, array in referansını tutuyor.
+            _array = new T[_array.Length + 1];
+            for (int i = 0; i < _temparray.Length; i++)
+            {
+                _array[i] = _temparray[i];
+            }
+
+            //eleman sayısını bir arttırmamız gerekir. Arraylerde eleman sayısını bir arttırınca newlememiz gerekiyordu.
+            _array[_array.Length - 1] = item;//bunu yazmadan önce yedek almamız gerekir
+            //çünkü arraylerde yeni ekleme (newleme) yaptığımızda öncekiler siliniyordu.
+        }
+             public int Count
+        {
+            get { return _array.Length; }
+            
+        }
+
     }
 }
