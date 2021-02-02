@@ -1,101 +1,53 @@
 ﻿using System;
 
-namespace InterfacesDemo
+namespace Inheritance
 {
+    //Inheritance
     class Program
     {
         static void Main(string[] args)
         {
-            IWorker[] workers = new IWorker[3]
+            Person[] persons = new Person[3]
             {
-
-            new Manager(),
-            new Worker(),
-            new Robot()
-
-            };
-            foreach (var worker in workers)
+                new Customer
+                {
+                    FirstName="Engin"
+                },
+            new Student
             {
-                worker.Work();
+            FirstName = "Derin"
+            },
+            new Person
+            {
+            FirstName = "Salih"
             }
+            //burada new person da olabilir.Çünkü
+            //Interface tek başına bir şey ifade etmiyor.Ama classlarda person bir anlam ifade ediyor
+            //tek başınada anlamlı inheritance verdiğimizde de anlamlı.
+            //inheritance önce yazılır sonra interfaceler sırayla yazılabilir.
+        };
 
-            IEat[] eats = new IEat[2]
+            foreach (var person in persons)
             {
-                new Worker(),
-                new Manager()
-            };
-            foreach (var eat in eats)
-            {
-                eat.Eat();
+                Console.WriteLine(person.FirstName);
             }
-            {
-
-            }
+            Console.ReadLine();
+        }
+        }
+        class Person
+        {
+            public int Id { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+        }
+        class Customer: Person //customerın ebeveyini person gibi düşünebiliriz. Çocuk babasına ait özellikleri taşıyabilir ve ek olarakta özellikleri olabilir.
+        {
+            public string City { get; set; }
+        }
+        class Student : Person
+        {
+            public string Department { get; set; }
         }
 
     }
-    //birden fazla iterface açarak kategorize etmemiz kolay olabilir
-    //burada bir classın birden fazla interface i implemente edebildiğidir.
 
-    
-    
-    interface IWorker
-    {
-        void Work();
-    }
-    interface IEat
-    {
-        void Eat();
-    }
-    interface ISalary
-    {
-    void GetSalary();
-    }
-
-
-
-    class Manager : IWorker, IEat, ISalary
-    {
-        public void Eat()
-        {
-            Console.WriteLine("Manager yemek saati: 12.30");
-        }
-
-        public void GetSalary()
-        {
-            Console.WriteLine("Manager maaşı: 7.000TL");
-        }
-
-        public void Work()
-        {
-            Console.WriteLine("Manager mesai saati toplam: 8 saat");
-        }
-    }
-    class Worker : IWorker, IEat, ISalary
-    {
-        public void Eat()
-        {
-            Console.WriteLine("Worker için Yemek Saati: 12.00");
-        }
-
-        public void GetSalary()
-        {
-            Console.WriteLine("Worker'ların aldığı maaş: 3.000TL");
-        }
-
-        public void Work()
-        {
-            Console.WriteLine("Worker'lar mesai saati toplamı: 8");
-        }
-    }
-    class Robot : IWorker
-    {
-        public void Work()
-        {
-            Console.WriteLine("Robotlar ihtiyaca göre çalışırlar");
-        }
-    }
-}
-
-//ÇOKLU IMPLEMENTASYON YAPTIK
-//SOLID YAZILIM GELİŞTİRME PRENSİPLERİ, Interface Segregation
