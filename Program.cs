@@ -1,106 +1,101 @@
-﻿using Interfaces;
-using Interfaces1;
-using System;
+﻿using System;
 
-namespace Interfaces
+namespace InterfacesDemo
 {
     class Program
     {
         static void Main(string[] args)
         {
-
-            //InterfaceIntro();
-            //Demo();
-
-            //Şimdi senoryomuz; bizim bir verimiz var ve bu veriyi hem şirketin oracle veritabanına hem de sql veritabanına yazmayı planlıyoruz
-            ICustomerDal[] customerDals = new ICustomerDal[3]
+            IWorker[] workers = new IWorker[3]
             {
-                new SqlServerCustomerDal(),
-                new OracleCustomerDal(),
-                new MySqlCustomerDal()
+
+            new Manager(),
+            new Worker(),
+            new Robot()
+
             };
-
-            foreach (var customerDal in customerDals)
+            foreach (var worker in workers)
             {
-                customerDal.Add();
+                worker.Work();
             }
 
-            Console.ReadLine();
-            //burada amaç uygulamanın bağımlılıklarını minimize etmek.
-        }
-
-        private static SqlServerCustomerDal OracleCustomerDal()
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void Demo()
-        {
-            CustomerManager customerManager = new CustomerManager();
-            customerManager.Add(new OracleCustomerDal()); //Burada soruyor oracle a mı ekleyim sql mi. bizde oracle i seçtik örnek olarak.
-                                                          // IPerson person = new Customer(); böyle yazılabilir
-                                                          //bir interface in insteance ı oluşturulamaz.Soyut nesneleri new leyemeyiz. Yani
-                                                          //IPerson person=new IPerson denilmez.bunun yerine classlardaki somut nesnelerimiz tanımlanır.
-        }
-
-
-        private static void InterfaceIntro()
-        {
-            PersonManager manager = new PersonManager();
-            Customer customer = new Customer
+            IEat[] eats = new IEat[2]
             {
-                Id = 1,
-                FirstName = "Sude",
-                LastName = "Büyükmumcu",
-                Address = "Ankara"
+                new Worker(),
+                new Manager()
             };
-
-            Student student = new Student
+            foreach (var eat in eats)
             {
-                Id = 1,
-                FirstName = "Hüma",
-                LastName = "Büyükmumcu",
-                Departmant = "Computer Sciences"
-            };
+                eat.Eat();
+            }
+            {
 
-            manager.Add(customer);
-            manager.Add(student);
+            }
+        }
+
+    }
+    //birden fazla iterface açarak kategorize etmemiz kolay olabilir
+    //burada bir classın birden fazla interface i implemente edebildiğidir.
+
+    
+    
+    interface IWorker
+    {
+        void Work();
+    }
+    interface IEat
+    {
+        void Eat();
+    }
+    interface ISalary
+    {
+    void GetSalary();
+    }
+
+
+
+    class Manager : IWorker, IEat, ISalary
+    {
+        public void Eat()
+        {
+            Console.WriteLine("Manager yemek saati: 12.30");
+        }
+
+        public void GetSalary()
+        {
+            Console.WriteLine("Manager maaşı: 7.000TL");
+        }
+
+        public void Work()
+        {
+            Console.WriteLine("Manager mesai saati toplam: 8 saat");
         }
     }
-    interface IPerson //başında büyük harf I olması Interface demek.
-                      //buna ise soyut nesne denir.Soyut nesneler tek başşına bir anlam ifade etmezler.
+    class Worker : IWorker, IEat, ISalary
     {
-        int Id { get; set; } //public yazılmaz. 
-        string FirstName { get; set; }
-        string LastName { get; set; }
-    }
-    class Customer : IPerson //somut nesne, buradaki class da tanımladığımız neslere IPerson diyerek ne olduklarını tanımlıyoruz.
-                             //bu şu anlama geliyor. Biz IPersonda tanımlanmış her şeyi bu classlarda görebiliriz artık.
-    {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Address { get; set; } //örneğin sadece müşteriye özel bir şey tanımlamak istiyorsak bu şekilde ekleme yapaniliriz.
-    }
-    class Student : IPerson //somut nesne
-    {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Departmant { get; set; } //aynı şekilde öğrencide ise sadece departmanı tutmak istiyoruz.
-    }
+        public void Eat()
+        {
+            Console.WriteLine("Worker için Yemek Saati: 12.00");
+        }
 
-    //müşteriye ait ve öğrenciye ait ayrıca özellikler tanımlayabildik. Aynı zamanda hepsi için ortak olanı da implemente ettik.
-}
-class PersonManager
-{
-    //public void Add(Customer customer) 
-    //burada metot tanımlamak istiyorum. Burayı böyle yazmak yerine hepsini tanıması için IPErson şeklinde tanımlarız.
-    //burada bana müşteri tipinde bir parametre ver diyorum.
-    public void Add(IPerson person) //ben buraya IPerson dediğim zaman ister customer gönderirim ister student
-        //çünkü IPerson interface ve classlara tanımladık.
+        public void GetSalary()
+        {
+            Console.WriteLine("Worker'ların aldığı maaş: 3.000TL");
+        }
+
+        public void Work()
+        {
+            Console.WriteLine("Worker'lar mesai saati toplamı: 8");
+        }
+    }
+    class Robot : IWorker
     {
-        Console.WriteLine(person.FirstName);
+        public void Work()
+        {
+            Console.WriteLine("Robotlar ihtiyaca göre çalışırlar");
+        }
     }
 }
 
+//ÇOKLU IMPLEMENTASYON YAPTIK
+//SOLID YAZILIM GELİŞTİRME PRENSİPLERİ, Interface Segregation
