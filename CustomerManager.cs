@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Interfaces1;
+using System;
 
-namespace Classes
+namespace Interfaces
 {
-    class CustomerManager
+    internal class CustomerManager
     {
-        //böylece CustomerManager class ımın içinde iki tane metod oluşturdum.
-        public void Add()
+        internal void Add(OracleCustomerDal oracleCustomerDal)
         {
-            Console.WriteLine("Customer Added");
-        }
-        public void Update()
-        {
-            Console.WriteLine("Customer Updated");
+            throw new NotImplementedException();
         }
     }
-    }
+}
